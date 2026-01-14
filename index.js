@@ -1,4 +1,3 @@
-
 console.clear()
 console.log("📳 Starting SILA-MD...")
 
@@ -42,8 +41,6 @@ const ff = require('fluent-ffmpeg')
 const P = require('pino')
 const config = require('./config')
 const GroupEvents = require('./lib/groupevents')
-const qrcode = require('qrcode-terminal')
-const StickersTypes = require('wa-sticker-formatter')
 const util = require('util')
 const { sms, downloadMediaMessage, AntiDelete } = require('./lib')
 const FileType = require('file-type')
@@ -107,7 +104,7 @@ async function connectToWA() {
 
     conn = makeWASocket({
       logger: P({ level: 'silent' }),
-      printQRInTerminal: false,
+      printQRInTerminal: false, // QR CODE IMEONDOKA
       browser: Browsers.macOS("Firefox"),
       syncFullHistory: true,
       auth: state,
@@ -115,12 +112,7 @@ async function connectToWA() {
     })
 
     conn.ev.on('connection.update', async (update) => {
-      const { connection, lastDisconnect, qr } = update
-
-      if (qr) {
-        console.log('[ 📱 ] QR Code generated. Please scan with WhatsApp.')
-        qrcode.generate(qr, { small: true })
-      }
+      const { connection, lastDisconnect } = update // QR CODE IMEONDOKA HAPA
 
       if (connection === 'close') {
         const shouldReconnect = lastDisconnect?.error?.output?.statusCode !== DisconnectReason.loggedOut
